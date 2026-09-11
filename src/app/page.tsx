@@ -415,7 +415,10 @@ export default function Home() {
               </div>
 
               <h3>ECE Student. Developer. Learner.</h3>
-
+              <p className="big-text">
+                Building my skills today to become a stronger{" "}
+                <span>software developer tomorrow.</span>
+              </p>
               <p>
                 I am a B.Tech Electronics and Communication Engineering student
                 at IIIT Manipur. My interests lie at the intersection of
@@ -424,8 +427,21 @@ export default function Home() {
 
               <p>
                 Currently, I am strengthening my DSA skills, building full
-                stack applications and exploring AI-powered solutions while
-                continuing to develop my core ECE knowledge.
+                stack applications and exploring AI-powered solutions Although my academic background is in ECE,
+                I genuinely enjoy building software, exploring web technologies
+                and solving Data Structures & Algorithms problems.
+              </p>
+              <p className="muted-text">
+                I&apos;ve worked on projects ranging from responsive frontend
+                applications to full-stack and AI-powered systems. My current
+                focus is strengthening my DSA fundamentals, improving my
+                development skills and learning how modern AI can be integrated
+                into useful software products.
+              </p>
+                 <p className="muted-text">
+                I believe my ECE background gives me a different perspective,
+                while my consistent work in programming and software development
+                is helping me move toward a career in the software industry.
               </p>
             </div>
 
