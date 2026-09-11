@@ -1,146 +1,787 @@
 "use client";
 
-import { useState } from "react";
+import Image from "next/image";
+import {
+  Sun,
+  Moon,
+  Menu,
+  X,
+  Mail,
+  ExternalLink,
+  Download,
+  Code2,
+  GraduationCap,
+  ArrowUpRight,
+  Phone,
+  Briefcase,
+  Cpu,
+  Sparkles,
+  ChevronDown,
+} from "lucide-react";
+import { useEffect, useState, type ReactNode } from "react";
 
-export default function Home() {
-  const [menuOpen, setMenuOpen] = useState(false);
+const projects = [
+  {
+    title: "AI Resume Matcher",
+    category: "AI • MERN • Full Stack",
+    description:
+      "AI-powered resume analysis platform that matches resumes with job descriptions, generates ATS scores and provides improvement suggestions.",
+    tech: ["React", "Node.js", "Express", "MongoDB", "Gemini API"],
+    github: "https://github.com/Aman8076",
+    accent: "cyan",
+  },
+  {
+    title: "Amazon Frontend Clone",
+    category: "Frontend Development",
+    description:
+      "Responsive Amazon-inspired frontend built with HTML and CSS featuring Flexbox, Grid, hover effects and responsive layouts.",
+    tech: ["HTML5", "CSS3", "Flexbox", "Grid"],
+    github: "https://github.com/Aman8076",
+    accent: "blue",
+  },
+  {
+    title: "Interactive Web Games",
+    category: "JavaScript",
+    description:
+      "Interactive Tic-Tac-Toe and Rock-Paper-Scissors games with dynamic UI, event handling, winner detection and score tracking.",
+    tech: ["JavaScript", "HTML", "CSS", "DOM"],
+    github: "https://github.com/Aman8076",
+    accent: "purple",
+  },
+];
 
-  const navItems = [
-    { name: "About", href: "#about" },
-    { name: "Education", href: "#education" },
-    { name: "Projects", href: "#projects" },
-    { name: "Skills", href: "#skills" },
-    { name: "Coding", href: "#coding" },
-    { name: "Achievements", href: "#achievements" },
-    { name: "Experience", href: "#experience" },
-    { name: "Contact", href: "#contact" },
-  ];
+const skills = [
+  "C",
+  "C++",
+  "JavaScript",
+  "Python",
+  "SQL",
+  "HTML5",
+  "CSS3",
+  "React.js",
+  "Node.js",
+  "Express.js",
+  "MongoDB",
+  "Git",
+  "GitHub",
+  "Postman",
+  "DSA",
+  "REST APIs",
+];
 
+const achievements = [
+  {
+    icon: "🏆",
+    title: "Institute Topper",
+    text: "Top rank in branch during 4th semester.",
+  },
+  {
+    icon: "💻",
+    title: "300+ LeetCode Problems",
+    text: "Consistent problem solving and DSA practice.",
+  },
+  {
+    icon: "🎤",
+    title: "1st Position",
+    text: "Stand-Up Comedy Competition at IIIT Manipur.",
+  },
+  {
+    icon: "📚",
+    title: "ECE Performance",
+    text: "Strong academic foundation in core electronics.",
+  },
+];
+
+function SectionTitle({
+  eyebrow,
+  title,
+  description,
+}: {
+  eyebrow: string;
+  title: string;
+  description?: string;
+}) {
   return (
-    <main className="min-h-screen bg-black text-white">
+    <div className="section-heading">
+      <span className="section-eyebrow">{eyebrow}</span>
+      <h2>{title}</h2>
+      {description && <p>{description}</p>}
+    </div>
+  );
+}
 
-      {/* ================= NAVBAR ================= */}
-      <nav className="sticky top-0 z-50 border-b border-white/10 bg-black/80 backdrop-blur-xl">
-        <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+function SocialButton({
+  children,
+  href,
+  label,
+}: {
+  children: ReactNode;
+  href: string;
+  label: string;
+}) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={label}
+      className="social-button"
+    >
+      {children}
+    </a>
+  );
+}
 
-          <a
-            href="#home"
-            className="text-2xl font-bold tracking-tight"
-          >
-            Aman<span className="text-cyan-400">.</span>
-          </a>
-
-          <div className="hidden items-center gap-6 lg:flex">
-            {navItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className="text-sm text-gray-300 transition hover:text-cyan-400"
-              >
-                {item.name}
-              </a>
-            ))}
-
-            <a
-              href="/Aman-Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full border border-cyan-400/40 bg-cyan-400/10 px-5 py-2 text-sm font-medium text-cyan-300 transition hover:bg-cyan-400/20"
-            >
-              Resume
-            </a>
-          </div>
-
-          <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="text-2xl lg:hidden"
-          >
-            ☰
-          </button>
+function ProjectCard({
+  project,
+}: {
+  project: (typeof projects)[number];
+}) {
+  return (
+    <article className={`project-card ${project.accent}`}>
+      <div className="project-top">
+        <div>
+          <span className="project-category">{project.category}</span>
+          <h3>{project.title}</h3>
         </div>
 
-        {menuOpen && (
-          <div className="border-t border-white/10 px-6 py-5 lg:hidden">
-            <div className="flex flex-col gap-5">
+        <a
+          href={project.github}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="project-arrow"
+          aria-label={`Open ${project.title}`}
+        >
+          <ArrowUpRight size={21} />
+        </a>
+      </div>
 
-              {navItems.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                  className="text-gray-300 transition hover:text-cyan-400"
-                >
-                  {item.name}
-                </a>
-              ))}
+      <p>{project.description}</p>
+
+      <div className="tech-list">
+        {project.tech.map((item) => (
+          <span key={item}>{item}</span>
+        ))}
+      </div>
+    </article>
+  );
+}
+
+export default function Home() {
+  const [isLight, setIsLight] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const savedTheme = localStorage.getItem("portfolio-theme");
+
+    if (savedTheme === "light") {
+      setIsLight(true);
+      document.documentElement.classList.add("light-mode");
+    }
+  }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = !isLight;
+
+    setIsLight(nextTheme);
+
+    if (nextTheme) {
+      document.documentElement.classList.add("light-mode");
+      localStorage.setItem("portfolio-theme", "light");
+    } else {
+      document.documentElement.classList.remove("light-mode");
+      localStorage.setItem("portfolio-theme", "dark");
+    }
+  };
+
+  const closeMenu = () => setMenuOpen(false);
+
+  return (
+    <main className="portfolio">
+      {/* Background */}
+      <div className="background-grid" />
+      <div className="glow glow-one" />
+      <div className="glow glow-two" />
+
+      {/* NAVBAR */}
+      <header className="navbar">
+        <div className="nav-container">
+          <a href="#home" className="logo" onClick={closeMenu}>
+            Aman<span>.</span>
+          </a>
+
+          <nav className={`nav-links ${menuOpen ? "open" : ""}`}>
+            <a href="#home" className="active" onClick={closeMenu}>
+              Home
+            </a>
+            <a href="#about" onClick={closeMenu}>
+              About
+            </a>
+            <a href="#projects" onClick={closeMenu}>
+              Projects
+            </a>
+            <a href="#skills" onClick={closeMenu}>
+              Skills
+            </a>
+            <a href="#education" onClick={closeMenu}>
+              Education
+            </a>
+            <a href="#contact" onClick={closeMenu}>
+              Contact
+            </a>
+          </nav>
+
+          <div className="nav-actions">
+            <button
+              className="theme-toggle"
+              onClick={toggleTheme}
+              aria-label="Toggle theme"
+            >
+              {isLight ? <Moon size={17} /> : <Sun size={17} />}
+            </button>
+
+            <button
+              className="menu-button"
+              onClick={() => setMenuOpen(!menuOpen)}
+              aria-label="Open menu"
+            >
+              {menuOpen ? <X size={23} /> : <Menu size={23} />}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* HERO */}
+      <section id="home" className="hero">
+        <div className="hero-container">
+          {/* LEFT */}
+          <div className="hero-content">
+            <div className="availability">
+              <span className="availability-dot" />
+              Available for internships
+            </div>
+
+            <p className="hello">Hello, I&apos;m</p>
+
+            <h1>
+              Aman<span className="cursor">|</span>
+            </h1>
+
+            <div className="hero-role">
+              <span>ECE Student</span>
+              <b>|</b>
+              <span>Developer</span>
+              <b>|</b>
+              <span>Problem Solver</span>
+            </div>
+
+            <p className="hero-description">
+              I&apos;m a passionate ECE student at IIIT, exploring the world
+              of technology, building useful projects, and constantly learning
+              new things. I love solving problems, coding, and creating ideas
+              that make an impact.
+            </p>
+
+            <div className="hero-buttons">
+              <a href="#projects" className="primary-button">
+                <Code2 size={18} />
+                View Projects
+              </a>
 
               <a
                 href="/Aman-Resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-fit rounded-full border border-cyan-400/40 bg-cyan-400/10 px-5 py-2 text-cyan-300"
+                download
+                className="secondary-button"
               >
-                Resume
+                <Download size={18} />
+                Download Resume
               </a>
+            </div>
 
+            <div className="socials">
+              <SocialButton
+                href="https://github.com/Aman8076"
+                label="GitHub"
+              >
+                <span className="social-text github-text">GH</span>
+              </SocialButton>
+
+              <SocialButton
+                href="https://www.linkedin.com/in/aman-a1439a282/"
+                label="LinkedIn"
+              >
+                <span className="social-text linkedin-text">in</span>
+              </SocialButton>
+
+              <SocialButton
+                href="https://leetcode.com/u/Aman_1206/"
+                label="LeetCode"
+              >
+                <span className="social-text leetcode-text">LC</span>
+              </SocialButton>
+
+              <SocialButton
+                href="mailto:amanadv2022@gmail.com"
+                label="Email"
+              >
+                <Mail size={19} />
+              </SocialButton>
             </div>
           </div>
-        )}
-      </nav>
 
-      {/* ================= HERO ================= */}
-      <section id="home" className="relative overflow-hidden">
+          {/* RIGHT / CIRCULAR IMAGE */}
+          <div className="hero-visual">
+            <div className="floating-square square-one" />
+            <div className="floating-square square-two" />
+            <div className="floating-square square-three" />
 
-        <div className="pointer-events-none absolute left-1/2 top-20 h-72 w-72 -translate-x-1/2 rounded-full bg-cyan-500/10 blur-3xl" />
+            <div className="orbit orbit-one" />
+            <div className="orbit orbit-two" />
 
-        <div className="relative mx-auto flex min-h-[85vh] max-w-7xl flex-col items-center justify-center px-6 py-20 text-center">
+            <div className="profile-wrapper">
+              <div className="profile-glow" />
 
-          <div className="mb-6 rounded-full border border-cyan-400/20 bg-cyan-400/10 px-5 py-2 text-sm text-cyan-300">
-            Available for Internships
+              <div className="profile-ring">
+                <div className="profile-image">
+                  <Image
+                    src="/profile.jpeg"
+                    alt="Aman"
+                    fill
+                    priority
+                    sizes="(max-width: 768px) 250px, 390px"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="keep-building">
+              <span>Keep</span>
+              <strong>Building</strong>
+              <div className="scribble">〰〰</div>
+            </div>
+
+            {/* INFO CARD */}
+            <div className="hero-info-card">
+              <div className="info-item">
+                <GraduationCap size={22} />
+                <div>
+                  <strong>IIIT</strong>
+                  <span>B.Tech ECE</span>
+                </div>
+              </div>
+
+              <div className="info-divider" />
+
+              <div className="info-item">
+                <Code2 size={22} />
+                <div>
+                  <strong>DSA</strong>
+                  <span>LeetCode</span>
+                </div>
+              </div>
+
+              <div className="info-divider" />
+
+              <div className="info-item">
+                <Briefcase size={22} />
+                <div>
+                  <strong>GATE</strong>
+                  <span>Preparing</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <a href="#about" className="scroll-down">
+          <span>Scroll to explore</span>
+          <ChevronDown size={18} />
+        </a>
+      </section>
+
+      {/* ABOUT */}
+      <section id="about" className="section about-section">
+        <div className="container">
+          <SectionTitle
+            eyebrow="01 — About Me"
+            title="Building with curiosity."
+            description="A combination of electronics, software and problem solving."
+          />
+
+          <div className="about-grid">
+            <div className="about-card main-about-card">
+              <div className="about-icon">
+                <Sparkles size={25} />
+              </div>
+
+              <h3>ECE Student. Developer. Learner.</h3>
+
+              <p>
+                I am a B.Tech Electronics and Communication Engineering student
+                at IIIT Manipur. My interests lie at the intersection of
+                electronics and software development.
+              </p>
+
+              <p>
+                Currently, I am strengthening my DSA skills, building full
+                stack applications and exploring AI-powered solutions while
+                continuing to develop my core ECE knowledge.
+              </p>
+            </div>
+
+            <div className="about-side">
+              <div className="mini-card">
+                <Cpu size={25} />
+                <h4>ECE Foundation</h4>
+                <p>
+                  Signals, DSP, Communication Systems, Analog Circuits and
+                  Microprocessors.
+                </p>
+              </div>
+
+              <div className="mini-card">
+                <Code2 size={25} />
+                <h4>Software Development</h4>
+                <p>
+                  React, Node.js, Express, MongoDB, JavaScript and DSA.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* PROJECTS */}
+      <section id="projects" className="section projects-section">
+        <div className="container">
+          <SectionTitle
+            eyebrow="02 — Projects"
+            title="Things I&apos;ve built."
+            description="Projects where I turn ideas into working products."
+          />
+
+          <div className="projects-grid">
+            {projects.map((project) => (
+              <ProjectCard key={project.title} project={project} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* SKILLS */}
+      <section id="skills" className="section skills-section">
+        <div className="container">
+          <SectionTitle
+            eyebrow="03 — Skills"
+            title="My technical toolkit."
+            description="Technologies and concepts I work with."
+          />
+
+          <div className="skills-layout">
+            <div className="skills-card">
+              <h3>Languages & Technologies</h3>
+
+              <div className="skills-list">
+                {skills.map((skill) => (
+                  <span key={skill}>{skill}</span>
+                ))}
+              </div>
+            </div>
+
+            <div className="skills-card">
+              <h3>Core ECE</h3>
+
+              <div className="core-skills">
+                <div>
+                  <span>Signals & Systems</span>
+                  <span>Digital Signal Processing</span>
+                </div>
+
+                <div>
+                  <span>Communication Systems</span>
+                  <span>Analog Circuits</span>
+                </div>
+
+                <div>
+                  <span>Microprocessors</span>
+                  <span>Semiconductor Devices</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CODING */}
+      <section className="section coding-section">
+        <div className="container">
+          <div className="coding-card">
+            <div>
+              <span className="section-eyebrow">CODING</span>
+              <h2>Always solving the next problem.</h2>
+              <p>
+                I regularly practice DSA and competitive programming to improve
+                my problem-solving ability.
+              </p>
+            </div>
+
+            <div className="coding-stats">
+              <div>
+                <strong>300+</strong>
+                <span>LeetCode Problems</span>
+              </div>
+
+              <div>
+                <strong>DSA</strong>
+                <span>Continuous Practice</span>
+              </div>
+
+              <a
+                href="https://leetcode.com/u/Aman_1206/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="coding-link"
+              >
+                LeetCode
+                <ExternalLink size={16} />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* EDUCATION */}
+      <section id="education" className="section education-section">
+        <div className="container">
+          <SectionTitle
+            eyebrow="04 — Education"
+            title="My academic journey."
+            description="A strong foundation in electronics and computer science."
+          />
+
+          <div className="timeline">
+            <div className="timeline-item current">
+              <div className="timeline-dot" />
+
+              <div className="timeline-content">
+                <span className="timeline-year">2024 — 2028</span>
+
+                <h3>Indian Institute of Information Technology, Manipur</h3>
+
+                <h4>B.Tech — Electronics & Communication Engineering</h4>
+
+                <p>
+                  Currently pursuing B.Tech with a focus on core electronics,
+                  software development, DSA and emerging technologies.
+                </p>
+
+                <div className="cgpa">
+                  <span>CGPA</span>
+                  <strong>7.90</strong>
+                </div>
+              </div>
+            </div>
+
+            <div className="timeline-item">
+              <div className="timeline-dot" />
+
+              <div className="timeline-content">
+                <span className="timeline-year">Class XII</span>
+
+                <h3>GOVT SR SEC SCHOOL, REWARI</h3>
+
+                <p>Senior Secondary Education</p>
+
+                <div className="percentage">
+                  <strong>89.6%</strong>
+                </div>
+              </div>
+            </div>
+
+            <div className="timeline-item">
+              <div className="timeline-dot" />
+
+              <div className="timeline-content">
+                <span className="timeline-year">Class X</span>
+
+                <h3>
+                  GOVT MODEL SR SEC SCHOOL IN APPLIED LEARNING SKILLS,
+                  FARIDABAD
+                </h3>
+
+                <p>Secondary Education</p>
+
+                <div className="percentage">
+                  <strong>96.6%</strong>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ACADEMIC / LAB */}
+      <section className="section lab-section">
+        <div className="container">
+          <SectionTitle
+            eyebrow="05 — Academic Experience"
+            title="Beyond the classroom."
+            description="Hands-on academic and laboratory experience."
+          />
+
+          <div className="lab-grid">
+            <div className="lab-card">
+              <Cpu size={27} />
+              <h3>Signals & Communication</h3>
+              <p>
+                Signal simulation, frequency analysis, modulation and sampling
+                experiments using GNU Octave.
+              </p>
+            </div>
+
+            <div className="lab-card">
+              <Cpu size={27} />
+              <h3>Analog Electronics</h3>
+              <p>
+                Practical work with analog circuits, amplifiers, OP-AMPs and
+                circuit simulation.
+              </p>
+            </div>
+
+            <div className="lab-card">
+              <Cpu size={27} />
+              <h3>Electronic Measurements</h3>
+              <p>
+                Hands-on experience with CRO, function generator and
+                multimeter-based measurements.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ACHIEVEMENTS */}
+      <section className="section achievements-section">
+        <div className="container">
+          <SectionTitle
+            eyebrow="06 — Achievements"
+            title="Milestones so far."
+            description="A few things I am proud of."
+          />
+
+          <div className="achievement-grid">
+            {achievements.map((achievement) => (
+              <div className="achievement-card" key={achievement.title}>
+                <span className="achievement-icon">{achievement.icon}</span>
+
+                <div>
+                  <h3>{achievement.title}</h3>
+                  <p>{achievement.text}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* LEADERSHIP */}
+      <section className="section leadership-section">
+        <div className="container">
+          <SectionTitle
+            eyebrow="07 — Leadership"
+            title="Leading beyond academics."
+          />
+
+          <div className="leadership-grid">
+            <div className="leadership-card">
+              <span>01</span>
+              <h3>Lead — Stand-Up Club</h3>
+              <p>
+                Led club activities, coordinated events and contributed to
+                cultural activities at IIIT Manipur.
+              </p>
+            </div>
+
+            <div className="leadership-card">
+              <span>02</span>
+              <h3>Sports Club — Think India</h3>
+              <p>
+                Contributed to sports activities, trials and coordination for
+                students across multiple games.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CONTACT */}
+      <section id="contact" className="section contact-section">
+        <div className="container">
+          <div className="contact-card">
+            <div className="contact-content">
+              <span className="section-eyebrow">08 — Contact</span>
+
+              <h2>Let&apos;s build something useful.</h2>
+
+              <p>
+                I&apos;m currently open to internship opportunities,
+                collaborations and interesting technical projects.
+              </p>
+
+              <div className="contact-buttons">
+                <a
+                  href="mailto:amanadv2022@gmail.com"
+                  className="primary-button"
+                >
+                  <Mail size={18} />
+                  Email Me
+                </a>
+
+                <a href="tel:+918076033359" className="secondary-button">
+                  <Phone size={18} />
+                  Contact Me
+                </a>
+              </div>
+            </div>
+
+            <div className="contact-info">
+              <a href="mailto:amanadv2022@gmail.com">
+                <Mail size={19} />
+                <span>amanadv2022@gmail.com</span>
+              </a>
+
+              <a href="tel:+918076033359">
+                <Phone size={19} />
+                <span>+91 8076903359</span>
+              </a>
+
+              <a
+                href="https://github.com/Aman8076"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Code2 size={19} />
+                <span>github.com/Aman8076</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer className="footer">
+        <div className="footer-container">
+          <div className="footer-logo">
+            Aman<span>.</span>
           </div>
 
-          <p className="mb-4 text-lg text-gray-400">
-            ECE Student • Developer • Problem Solver
-          </p>
+          <p>© 2026 Aman. Built with Next.js & passion.</p>
 
-          <h1 className="text-5xl font-bold tracking-tight sm:text-6xl md:text-7xl">
-            Hi, I&apos;m{" "}
-            <span className="text-cyan-400">Aman</span>
-          </h1>
-
-          <p className="mt-6 max-w-2xl text-lg leading-8 text-gray-400">
-            I build modern web experiences and AI-powered solutions
-            while continuously improving my problem-solving and
-            development skills.
-          </p>
-
-          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-
-            <a
-              href="#projects"
-              className="rounded-full bg-cyan-400 px-7 py-3 font-semibold text-black transition hover:scale-105"
-            >
-              View Projects
-            </a>
-
-            <a
-              href="/Aman-Resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="rounded-full border border-white/20 px-7 py-3 font-semibold transition hover:border-cyan-400 hover:text-cyan-400"
-            >
-              View Resume
-            </a>
-
-          </div>
-
-          <div className="mt-8 flex gap-6 text-sm text-gray-400">
-
+          <div className="footer-links">
             <a
               href="https://github.com/Aman8076"
               target="_blank"
               rel="noopener noreferrer"
-              className="transition hover:text-white"
             >
               GitHub
             </a>
@@ -149,7 +790,6 @@ export default function Home() {
               href="https://www.linkedin.com/in/aman-a1439a282/"
               target="_blank"
               rel="noopener noreferrer"
-              className="transition hover:text-cyan-400"
             >
               LinkedIn
             </a>
@@ -158,1102 +798,12 @@ export default function Home() {
               href="https://leetcode.com/u/Aman_1206/"
               target="_blank"
               rel="noopener noreferrer"
-              className="transition hover:text-yellow-400"
             >
               LeetCode
             </a>
-
-          </div>
-
-          <div className="mt-16 grid w-full max-w-3xl grid-cols-2 gap-4 md:grid-cols-4">
-
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-              <p className="text-2xl font-bold text-cyan-400">7.90</p>
-              <p className="mt-1 text-sm text-gray-500">CGPA</p>
-            </div>
-
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-              <p className="text-2xl font-bold text-cyan-400">300+</p>
-              <p className="mt-1 text-sm text-gray-500">LeetCode</p>
-            </div>
-
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-              <p className="text-2xl font-bold text-cyan-400">3+</p>
-              <p className="mt-1 text-sm text-gray-500">Projects</p>
-            </div>
-
-            <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-              <p className="text-2xl font-bold text-cyan-400">ECE</p>
-              <p className="mt-1 text-sm text-gray-500">IIIT Manipur</p>
-            </div>
-
           </div>
         </div>
-      </section>
-
-      {/* ================= ABOUT ================= */}
-      <section id="about" className="mx-auto max-w-6xl px-6 py-24">
-
-        <div className="mb-12">
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">
-            About Me
-          </p>
-
-          <h2 className="text-4xl font-bold md:text-5xl">
-            Who I Am
-          </h2>
-        </div>
-
-        <div className="grid gap-8 md:grid-cols-2">
-
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-8">
-
-            <p className="text-lg leading-8 text-gray-300">
-              I&apos;m Aman, an Electronics and Communication Engineering
-              student at IIIT Manipur with a strong interest in software
-              development, problem solving and AI-powered applications.
-            </p>
-
-            <p className="mt-5 leading-7 text-gray-400">
-              I enjoy building projects, solving Data Structures and
-              Algorithms problems and learning technologies that help
-              me become a better software engineer.
-            </p>
-
-          </div>
-
-          <div className="rounded-3xl border border-cyan-400/20 bg-cyan-400/[0.04] p-8">
-
-            <p className="text-sm uppercase tracking-wider text-gray-500">
-              Current Focus
-            </p>
-
-            <h3 className="mt-4 text-3xl font-bold">
-              Software Development{" "}
-              <span className="text-cyan-400">+ AI</span>
-            </h3>
-
-            <p className="mt-5 leading-7 text-gray-400">
-              Currently focusing on Web Development, DSA, AI integration
-              and building practical projects for internships and
-              placements.
-            </p>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* ================= EDUCATION ================= */}
-      <section id="education" className="mx-auto max-w-6xl px-6 py-24">
-
-        <div className="mb-14">
-
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">
-            My Journey
-          </p>
-
-          <h2 className="text-4xl font-bold md:text-5xl">
-            Education
-          </h2>
-
-          <p className="mt-4 max-w-2xl text-gray-400">
-            My academic journey from school to engineering.
-          </p>
-
-        </div>
-
-        <div className="relative">
-
-          <div className="absolute left-[15px] top-0 h-full w-px bg-gray-700 md:left-1/2 md:-translate-x-1/2" />
-
-          {/* IIIT */}
-          <div className="relative mb-16 flex flex-col md:flex-row md:items-center">
-
-            <div className="absolute left-0 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-cyan-400 bg-black text-cyan-400 md:left-1/2 md:-translate-x-1/2">
-              🎓
-            </div>
-
-            <div className="ml-14 w-full md:ml-0 md:w-1/2 md:pr-12 md:text-right">
-
-              <p className="text-sm font-medium text-cyan-400">
-                2024 — 2028
-              </p>
-
-              <h3 className="mt-2 text-2xl font-bold">
-                B.Tech — Electronics & Communication Engineering
-              </h3>
-
-              <p className="mt-2 text-lg text-gray-300">
-                IIIT Manipur
-              </p>
-
-            </div>
-
-            <div className="mt-5 ml-14 w-full md:ml-0 md:mt-0 md:w-1/2 md:pl-12">
-
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:border-cyan-400/40">
-
-                <p className="text-sm uppercase tracking-wider text-gray-500">
-                  Current
-                </p>
-
-                <p className="mt-3 leading-7 text-gray-300">
-                  Pursuing B.Tech in Electronics and Communication
-                  Engineering with interests in software development,
-                  problem solving and AI.
-                </p>
-
-                <div className="mt-5 inline-flex rounded-full border border-cyan-400/20 bg-cyan-400/10 px-4 py-2 text-sm text-cyan-300">
-                  CGPA: 7.90
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-
-          {/* Class 12 */}
-          <div className="relative mb-16 flex flex-col md:flex-row md:items-center">
-
-            <div className="absolute left-0 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-purple-400 bg-black text-purple-400 md:left-1/2 md:-translate-x-1/2">
-              🏫
-            </div>
-
-            <div className="ml-14 w-full md:ml-0 md:w-1/2 md:pr-12 md:text-right">
-
-              <p className="text-sm font-medium text-purple-400">
-                Class 12
-              </p>
-
-              <h3 className="mt-2 text-2xl font-bold">
-                Senior Secondary Education
-              </h3>
-
-              <p className="mt-2 text-gray-400">
-                GOVT SR SEC SCHOOL, REWARI
-              </p>
-
-            </div>
-
-            <div className="mt-5 ml-14 w-full md:ml-0 md:mt-0 md:w-1/2 md:pl-12">
-
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:border-purple-400/40">
-
-                <p className="leading-7 text-gray-300">
-                  Completed Class 12 with a strong academic foundation
-                  before beginning my engineering journey.
-                </p>
-
-                <div className="mt-5 inline-flex rounded-full border border-purple-400/20 bg-purple-400/10 px-4 py-2 text-sm text-purple-300">
-                  Percentage: 89.6%
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-
-          {/* Class 10 */}
-          <div className="relative flex flex-col md:flex-row md:items-center">
-
-            <div className="absolute left-0 top-2 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-pink-400 bg-black text-pink-400 md:left-1/2 md:-translate-x-1/2">
-              📚
-            </div>
-
-            <div className="ml-14 w-full md:ml-0 md:w-1/2 md:pr-12 md:text-right">
-
-              <p className="text-sm font-medium text-pink-400">
-                Class 10
-              </p>
-
-              <h3 className="mt-2 text-2xl font-bold">
-                Secondary Education
-              </h3>
-
-              <p className="mt-2 text-gray-400">
-                GOVT MODEL SR SEC SCHOOL IN APPLIED LEARNING SKILLS
-              </p>
-
-              <p className="mt-1 text-sm text-gray-500">
-                Faridabad Old, Faridabad
-              </p>
-
-            </div>
-
-            <div className="mt-5 ml-14 w-full md:ml-0 md:mt-0 md:w-1/2 md:pl-12">
-
-              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-1 hover:border-pink-400/40">
-
-                <p className="leading-7 text-gray-300">
-                  Completed secondary education with strong academic
-                  performance and developed an early interest in
-                  technology and engineering.
-                </p>
-
-                <div className="mt-5 inline-flex rounded-full border border-pink-400/20 bg-pink-400/10 px-4 py-2 text-sm text-pink-300">
-                  Percentage: 96.6%
-                </div>
-
-              </div>
-
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ================= PROJECTS ================= */}
-      <section id="projects" className="mx-auto max-w-6xl px-6 py-24">
-
-        <div className="mb-14">
-
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">
-            What I Build
-          </p>
-
-          <h2 className="text-4xl font-bold md:text-5xl">
-            Featured Projects
-          </h2>
-
-          <p className="mt-4 max-w-2xl leading-7 text-gray-400">
-            Projects where I apply programming, web development and AI
-            to solve practical problems.
-          </p>
-
-        </div>
-
-        <div className="space-y-8">
-
-          {/* PROJECT 1 */}
-          <div className="group overflow-hidden rounded-3xl border border-cyan-400/20 bg-white/[0.03] transition duration-300 hover:-translate-y-1 hover:border-cyan-400/50">
-
-            <div className="grid md:grid-cols-3">
-
-              <div className="flex min-h-[300px] items-center justify-center bg-cyan-400/[0.04] md:col-span-1">
-
-                <div className="text-center">
-
-                  <p className="text-8xl font-bold text-cyan-400/20">
-                    01
-                  </p>
-
-                  <p className="mt-3 text-sm uppercase tracking-[0.3em] text-cyan-400">
-                    AI • MERN
-                  </p>
-
-                </div>
-
-              </div>
-
-              <div className="p-8 md:col-span-2">
-
-                <div className="flex flex-wrap items-center gap-3">
-
-                  <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-3 py-1 text-xs text-cyan-300">
-                    Featured Project
-                  </span>
-
-                  <span className="text-sm text-gray-500">
-                    Full Stack + AI
-                  </span>
-
-                </div>
-
-                <h3 className="mt-5 text-3xl font-bold">
-                  AI Resume Matcher
-                </h3>
-
-                <p className="mt-4 leading-7 text-gray-400">
-                  An AI-powered resume analysis platform designed to help
-                  candidates understand how well their resume matches a
-                  specific job description.
-                </p>
-
-                <div className="mt-7">
-
-                  <h4 className="font-semibold text-white">
-                    Problem
-                  </h4>
-
-                  <p className="mt-2 text-sm leading-6 text-gray-400">
-                    Job seekers often struggle to understand why their
-                    resume may not perform well against ATS systems or
-                    job requirements.
-                  </p>
-
-                </div>
-
-                <div className="mt-5">
-
-                  <h4 className="font-semibold text-white">
-                    Solution
-                  </h4>
-
-                  <p className="mt-2 text-sm leading-6 text-gray-400">
-                    The platform analyzes resumes, compares them with
-                    job descriptions and provides ATS-oriented scoring
-                    and AI-generated suggestions.
-                  </p>
-
-                </div>
-
-                <div className="mt-7 grid gap-3 sm:grid-cols-2">
-
-                  <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                    <p className="text-sm font-semibold">
-                      📄 Resume Upload
-                    </p>
-                    <p className="mt-1 text-xs leading-5 text-gray-500">
-                      Upload and process resume documents.
-                    </p>
-                  </div>
-
-                  <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                    <p className="text-sm font-semibold">
-                      🎯 ATS Matching
-                    </p>
-                    <p className="mt-1 text-xs leading-5 text-gray-500">
-                      Compare resume content against job requirements.
-                    </p>
-                  </div>
-
-                  <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                    <p className="text-sm font-semibold">
-                      🤖 AI Suggestions
-                    </p>
-                    <p className="mt-1 text-xs leading-5 text-gray-500">
-                      Generate AI-powered improvement suggestions.
-                    </p>
-                  </div>
-
-                  <div className="rounded-xl border border-white/10 bg-white/5 p-4">
-                    <p className="text-sm font-semibold">
-                      📊 ATS Visualization
-                    </p>
-                    <p className="mt-1 text-xs leading-5 text-gray-500">
-                      Present matching insights through visual feedback.
-                    </p>
-                  </div>
-
-                </div>
-
-                <div className="mt-7 flex flex-wrap gap-2">
-
-                  {[
-                    "React",
-                    "Node.js",
-                    "Express",
-                    "MongoDB",
-                    "JWT",
-                    "Multer",
-                    "PDF-Parse",
-                    "Gemini API",
-                  ].map((tech) => (
-
-                    <span
-                      key={tech}
-                      className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-gray-300"
-                    >
-                      {tech}
-                    </span>
-
-                  ))}
-
-                </div>
-
-                <div className="mt-7 flex flex-wrap gap-4">
-
-                  <a
-                    href="https://github.com/Aman8076"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-full border border-white/15 px-5 py-2.5 text-sm font-medium transition hover:border-cyan-400 hover:text-cyan-400"
-                  >
-                    GitHub ↗
-                  </a>
-
-                  <a
-                    href="#"
-                    className="rounded-full bg-cyan-400 px-5 py-2.5 text-sm font-semibold text-black transition hover:scale-105"
-                  >
-                    Live Demo ↗
-                  </a>
-
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          {/* PROJECT 2 */}
-          <div className="group overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] transition duration-300 hover:-translate-y-1 hover:border-purple-400/40">
-
-            <div className="grid md:grid-cols-3">
-
-              <div className="flex min-h-[250px] items-center justify-center bg-purple-400/[0.04] md:col-span-1">
-
-                <div className="text-center">
-
-                  <p className="text-8xl font-bold text-purple-400/20">
-                    02
-                  </p>
-
-                  <p className="mt-3 text-sm uppercase tracking-[0.3em] text-purple-400">
-                    FRONTEND
-                  </p>
-
-                </div>
-
-              </div>
-
-              <div className="p-8 md:col-span-2">
-
-                <p className="text-sm text-purple-400">
-                  Responsive Web Development
-                </p>
-
-                <h3 className="mt-3 text-3xl font-bold">
-                  Amazon Frontend Clone
-                </h3>
-
-                <p className="mt-4 leading-7 text-gray-400">
-                  A responsive Amazon-inspired frontend built to
-                  practice real-world layouts, responsive design and
-                  modern CSS.
-                </p>
-
-                <div className="mt-6">
-
-                  <h4 className="font-semibold">
-                    Highlights
-                  </h4>
-
-                  <ul className="mt-3 space-y-2 text-sm text-gray-400">
-                    <li>• Responsive homepage layout</li>
-                    <li>• Flexbox and CSS Grid</li>
-                    <li>• Hover interactions and animations</li>
-                    <li>• Mobile-friendly design</li>
-                  </ul>
-
-                </div>
-
-                <div className="mt-6 flex flex-wrap gap-2">
-
-                  {[
-                    "HTML5",
-                    "CSS3",
-                    "Flexbox",
-                    "CSS Grid",
-                    "Responsive Design",
-                  ].map((tech) => (
-
-                    <span
-                      key={tech}
-                      className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-gray-300"
-                    >
-                      {tech}
-                    </span>
-
-                  ))}
-
-                </div>
-
-                <div className="mt-7 flex flex-wrap gap-4">
-
-                  <a
-                    href="https://github.com/Aman8076"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-full border border-white/15 px-5 py-2.5 text-sm transition hover:border-purple-400 hover:text-purple-400"
-                  >
-                    GitHub ↗
-                  </a>
-
-                  <a
-                    href="#"
-                    className="rounded-full bg-purple-400 px-5 py-2.5 text-sm font-semibold text-black transition hover:scale-105"
-                  >
-                    Live Demo ↗
-                  </a>
-
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-          {/* PROJECT 3 */}
-          <div className="group overflow-hidden rounded-3xl border border-white/10 bg-white/[0.03] transition duration-300 hover:-translate-y-1 hover:border-yellow-400/40">
-
-            <div className="grid md:grid-cols-3">
-
-              <div className="flex min-h-[250px] items-center justify-center bg-yellow-400/[0.04] md:col-span-1">
-
-                <div className="text-center">
-
-                  <p className="text-8xl font-bold text-yellow-400/20">
-                    03
-                  </p>
-
-                  <p className="mt-3 text-sm uppercase tracking-[0.3em] text-yellow-400">
-                    JAVASCRIPT
-                  </p>
-
-                </div>
-
-              </div>
-
-              <div className="p-8 md:col-span-2">
-
-                <p className="text-sm text-yellow-400">
-                  Interactive Web Applications
-                </p>
-
-                <h3 className="mt-3 text-3xl font-bold">
-                  Interactive Web Games
-                </h3>
-
-                <p className="mt-4 leading-7 text-gray-400">
-                  A collection of browser-based games created to
-                  practice JavaScript logic, DOM manipulation and
-                  event handling.
-                </p>
-
-                <div className="mt-6">
-
-                  <h4 className="font-semibold">
-                    Included
-                  </h4>
-
-                  <ul className="mt-3 space-y-2 text-sm text-gray-400">
-                    <li>• Tic-Tac-Toe</li>
-                    <li>• Rock-Paper-Scissors</li>
-                    <li>• Dynamic score tracking</li>
-                    <li>• Real-time DOM updates</li>
-                  </ul>
-
-                </div>
-
-                <div className="mt-6 flex flex-wrap gap-2">
-
-                  {[
-                    "HTML",
-                    "CSS",
-                    "JavaScript",
-                    "DOM",
-                    "Event Handling",
-                  ].map((tech) => (
-
-                    <span
-                      key={tech}
-                      className="rounded-lg border border-white/10 bg-white/5 px-3 py-1.5 text-xs text-gray-300"
-                    >
-                      {tech}
-                    </span>
-
-                  ))}
-
-                </div>
-
-                <div className="mt-7 flex flex-wrap gap-4">
-
-                  <a
-                    href="https://github.com/Aman8076"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="rounded-full border border-white/15 px-5 py-2.5 text-sm transition hover:border-yellow-400 hover:text-yellow-400"
-                  >
-                    GitHub ↗
-                  </a>
-
-                  <a
-                    href="#"
-                    className="rounded-full bg-yellow-400 px-5 py-2.5 text-sm font-semibold text-black transition hover:scale-105"
-                  >
-                    Live Demo ↗
-                  </a>
-
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* ================= SKILLS ================= */}
-      <section id="skills" className="mx-auto max-w-6xl px-6 py-24">
-
-        <div className="mb-14">
-
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">
-            My Toolkit
-          </p>
-
-          <h2 className="text-4xl font-bold md:text-5xl">
-            Skills & Technologies
-          </h2>
-
-          <p className="mt-4 max-w-2xl leading-7 text-gray-400">
-            Technologies and concepts I use to build projects and
-            solve real-world problems.
-          </p>
-
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-
-          {[
-            {
-              icon: "💻",
-              title: "Programming",
-              skills: ["C", "C++", "JavaScript", "Python", "SQL"],
-            },
-            {
-              icon: "🌐",
-              title: "Web Development",
-              skills: ["HTML5", "CSS3", "React.js", "Next.js", "Tailwind CSS"],
-            },
-            {
-              icon: "⚙️",
-              title: "Backend & Database",
-              skills: ["Node.js", "Express.js", "MongoDB", "REST API", "JWT"],
-            },
-            {
-              icon: "🧠",
-              title: "DSA & Problem Solving",
-              skills: [
-                "Arrays",
-                "Strings",
-                "Linked List",
-                "Stack",
-                "Queue",
-                "Binary Search",
-                "BST",
-                "Bit Manipulation",
-              ],
-            },
-            {
-              icon: "🛠️",
-              title: "Tools",
-              skills: [
-                "Git",
-                "GitHub",
-                "VS Code",
-                "Postman",
-                "MATLAB",
-                "GNU Octave",
-              ],
-            },
-            {
-              icon: "⚡",
-              title: "Core ECE",
-              skills: [
-                "Signals & Systems",
-                "DSP",
-                "Communication Systems",
-                "Analog Circuits",
-                "Microprocessors",
-              ],
-            },
-          ].map((group) => (
-
-            <div
-              key={group.title}
-              className="group rounded-3xl border border-white/10 bg-white/[0.03] p-7 transition duration-300 hover:-translate-y-2 hover:border-cyan-400/30"
-            >
-
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-2xl">
-                {group.icon}
-              </div>
-
-              <h3 className="mt-6 text-xl font-bold">
-                {group.title}
-              </h3>
-
-              <div className="mt-5 flex flex-wrap gap-2">
-
-                {group.skills.map((skill) => (
-
-                  <span
-                    key={skill}
-                    className="rounded-full border border-white/10 bg-white/5 px-3 py-1.5 text-sm text-gray-300"
-                  >
-                    {skill}
-                  </span>
-
-                ))}
-
-              </div>
-
-            </div>
-
-          ))}
-
-        </div>
-      </section>
-
-      {/* ================= CODING ================= */}
-      <section id="coding" className="mx-auto max-w-6xl px-6 py-24">
-
-        <div className="mb-14">
-
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">
-            Coding & Development
-          </p>
-
-          <h2 className="text-4xl font-bold md:text-5xl">
-            My Coding Profiles
-          </h2>
-
-          <p className="mt-4 max-w-2xl leading-7 text-gray-400">
-            Platforms where I practice problem solving and build
-            software projects.
-          </p>
-
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2">
-
-          <a
-            href="https://github.com/Aman8076"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group rounded-3xl border border-white/10 bg-white/[0.03] p-8 transition duration-300 hover:-translate-y-2 hover:border-cyan-400/40"
-          >
-
-            <div className="flex items-start justify-between">
-
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-white/5 text-2xl">
-                ◉
-              </div>
-
-              <span className="text-xl text-gray-600 transition group-hover:text-cyan-400">
-                ↗
-              </span>
-
-            </div>
-
-            <h3 className="mt-7 text-2xl font-bold">
-              GitHub
-            </h3>
-
-            <p className="mt-3 leading-7 text-gray-400">
-              My development projects, repositories and code experiments
-              across web development, AI and programming.
-            </p>
-
-            <div className="mt-6 flex flex-wrap gap-2">
-
-              <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-gray-400">
-                Projects
-              </span>
-
-              <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-gray-400">
-                Code
-              </span>
-
-              <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-gray-400">
-                Development
-              </span>
-
-            </div>
-
-          </a>
-
-          <a
-            href="https://leetcode.com/u/Aman_1206/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="group rounded-3xl border border-white/10 bg-white/[0.03] p-8 transition duration-300 hover:-translate-y-2 hover:border-yellow-400/40"
-          >
-
-            <div className="flex items-start justify-between">
-
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-yellow-400/20 bg-yellow-400/10 text-2xl">
-                ⚡
-              </div>
-
-              <span className="text-xl text-gray-600 transition group-hover:text-yellow-400">
-                ↗
-              </span>
-
-            </div>
-
-            <h3 className="mt-7 text-2xl font-bold">
-              LeetCode
-            </h3>
-
-            <p className="mt-3 leading-7 text-gray-400">
-              Regularly practicing Data Structures and Algorithms to
-              improve problem-solving and coding skills.
-            </p>
-
-            <div className="mt-6 flex flex-wrap gap-2">
-
-              <span className="rounded-full border border-yellow-400/20 bg-yellow-400/10 px-3 py-1 text-xs text-yellow-300">
-                300+ Problems
-              </span>
-
-              <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-gray-400">
-                DSA
-              </span>
-
-              <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-gray-400">
-                Problem Solving
-              </span>
-
-            </div>
-
-          </a>
-
-        </div>
-      </section>
-
-      {/* ================= ACHIEVEMENTS ================= */}
-      <section id="achievements" className="mx-auto max-w-6xl px-6 py-24">
-
-        <div className="mb-12">
-
-          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">
-            Highlights
-          </p>
-
-          <h2 className="text-4xl font-bold md:text-5xl">
-            Achievements
-          </h2>
-
-        </div>
-
-        <div className="grid gap-6 md:grid-cols-2">
-
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-7 transition hover:-translate-y-1 hover:border-cyan-400/30">
-
-            <p className="text-3xl">🏆</p>
-
-            <h3 className="mt-4 text-xl font-bold">
-              Institute Topper
-            </h3>
-
-            <p className="mt-3 leading-7 text-gray-400">
-              Secured a top position in the branch during the 4th semester.
-            </p>
-
-          </div>
-
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-7 transition hover:-translate-y-1 hover:border-cyan-400/30">
-
-            <p className="text-3xl">💻</p>
-
-            <h3 className="mt-4 text-xl font-bold">
-              300+ LeetCode Problems
-            </h3>
-
-            <p className="mt-3 leading-7 text-gray-400">
-              Consistently practicing Data Structures and Algorithms
-              to strengthen problem-solving skills.
-            </p>
-
-          </div>
-
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-7 transition hover:-translate-y-1 hover:border-cyan-400/30">
-
-            <p className="text-3xl">🎤</p>
-
-            <h3 className="mt-4 text-xl font-bold">
-              Stand-Up Comedy — 1st Position
-            </h3>
-
-            <p className="mt-3 leading-7 text-gray-400">
-              Secured 1st position in a Stand-Up Comedy Competition
-              at IIIT Manipur.
-            </p>
-
-          </div>
-
-          <div className="rounded-3xl border border-white/10 bg-white/[0.03] p-7 transition hover:-translate-y-1 hover:border-cyan-400/30">
-
-            <p className="text-3xl">⚡</p>
-
-            <h3 className="mt-4 text-xl font-bold">
-              Leadership
-            </h3>
-
-            <p className="mt-3 leading-7 text-gray-400">
-              Lead, Stand-Up Club and Sports Club Lead, Think India —
-              IIIT Manipur.
-            </p>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* ================= DAY 8: RESUME ================= */}
-      <section
-        id="resume"
-        className="mx-auto max-w-6xl px-6 py-24"
-      >
-
-        <div className="rounded-[2rem] border border-cyan-400/20 bg-cyan-400/[0.04] p-8 md:p-12">
-
-          <div className="grid items-center gap-10 md:grid-cols-2">
-
-            <div>
-
-              <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">
-                My Resume
-              </p>
-
-              <h2 className="mt-4 text-4xl font-bold md:text-5xl">
-                Want to know more?
-              </h2>
-
-              <p className="mt-5 max-w-xl leading-7 text-gray-400">
-                Explore my academic background, technical skills,
-                projects, achievements and experience through my resume.
-              </p>
-
-            </div>
-
-            <div className="flex flex-col gap-4 sm:flex-row md:justify-end">
-
-              <a
-                href="/Aman-Resume.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-full bg-cyan-400 px-7 py-3 text-center font-semibold text-black transition hover:scale-105"
-              >
-                View Resume ↗
-              </a>
-
-              <a
-                href="/Aman-Resume.pdf"
-                download
-                className="rounded-full border border-white/20 px-7 py-3 text-center font-semibold transition hover:border-cyan-400 hover:text-cyan-400"
-              >
-                Download Resume ↓
-              </a>
-
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* ================= INTERNSHIP CTA ================= */}
-      <section className="mx-auto max-w-6xl px-6 pb-24">
-
-        <div className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03] p-8 text-center md:p-14">
-
-          <div className="pointer-events-none absolute left-1/2 top-0 h-60 w-60 -translate-x-1/2 rounded-full bg-cyan-400/10 blur-3xl" />
-
-          <div className="relative">
-
-            <p className="text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">
-              Open to Opportunities
-            </p>
-
-            <h2 className="mt-4 text-4xl font-bold md:text-5xl">
-              Looking for an Internship
-            </h2>
-
-            <p className="mx-auto mt-5 max-w-2xl leading-7 text-gray-400">
-              I&apos;m actively looking for software development,
-              web development and AI-related internship opportunities
-              where I can learn, contribute and grow.
-            </p>
-
-            <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-
-              <a
-                href="mailto:amanadv2022@gmail.com"
-                className="rounded-full bg-cyan-400 px-7 py-3 font-semibold text-black transition hover:scale-105"
-              >
-                Let&apos;s Connect
-              </a>
-
-              <a
-                href="#projects"
-                className="rounded-full border border-white/20 px-7 py-3 font-semibold transition hover:border-cyan-400 hover:text-cyan-400"
-              >
-                Explore Projects
-              </a>
-
-            </div>
-
-          </div>
-
-        </div>
-      </section>
-
-      {/* ================= CONTACT ================= */}
-      <section id="contact" className="mx-auto max-w-5xl px-6 py-24 text-center">
-
-        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.25em] text-cyan-400">
-          Get In Touch
-        </p>
-
-        <h2 className="text-4xl font-bold md:text-5xl">
-          Let&apos;s Build Something
-        </h2>
-
-        <p className="mx-auto mt-5 max-w-2xl leading-7 text-gray-400">
-          I&apos;m open to internship opportunities, collaborations and
-          interesting software development projects.
-        </p>
-
-        <a
-          href="mailto:amanadv2022@gmail.com"
-          className="mt-8 inline-block rounded-full bg-cyan-400 px-8 py-3 font-semibold text-black transition hover:scale-105"
-        >
-          Contact Me
-        </a>
-
-        <div className="mt-8 flex justify-center gap-6 text-sm text-gray-400">
-
-          <a
-            href="https://github.com/Aman8076"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition hover:text-white"
-          >
-            GitHub
-          </a>
-
-          <a
-            href="https://www.linkedin.com/in/aman-a1439a282/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition hover:text-cyan-400"
-          >
-            LinkedIn
-          </a>
-
-          <a
-            href="https://leetcode.com/u/Aman_1206/"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="transition hover:text-yellow-400"
-          >
-            LeetCode
-          </a>
-
-        </div>
-      </section>
-
-      {/* ================= FOOTER ================= */}
-      <footer className="border-t border-white/10 py-8 text-center">
-
-        <p className="text-sm text-gray-500">
-          © 2026 Aman. Built with Next.js & Tailwind CSS.
-        </p>
-
       </footer>
-
     </main>
   );
 }
